@@ -25,6 +25,7 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       DB_DATABASE: clients_db
+      FRONTEND_URL: http://localhost:4200/
     depends_on:
       - postgres 
     restart: always
