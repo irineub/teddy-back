@@ -12,5 +12,23 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: always
 
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teddy_backend
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: postgres 
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: clients_db
+    depends_on:
+      - postgres 
+    restart: always
+    command: sh -c "npm run migration:run && npm run start:prod"
+
 volumes:
   postgres_data:

@@ -31,12 +31,16 @@ export class ClientsService {
   }
 
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
+    const client = await this.clientRepository.findOne({where:{id}});
+    if(!client){
+      throw new NotFoundException('Cliente não Encontrado')
+    }
     await this.clientRepository.update(id, updateClientDto);
-    return
+    return 
   }
 
   async delete(id: number): Promise<void>{
     await this.clientRepository.delete(id);
-    return
+    return 
   }
 }
