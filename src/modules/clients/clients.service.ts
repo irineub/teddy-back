@@ -1,40 +1,42 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClientRepository } from 'src/database/repositories/client.repository';
 import { CreateClientDto } from './dto/CreateClientDto';
 import { UpdateClientDto } from './dto/UpdateClientDto';
 import { Client } from 'src/database/entities/client.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ClientsService {
   constructor(
-    @InjectRepository(ClientRepository)
-    private readonly clientRepository: ClientRepository,
+    @InjectRepository(Client)
+    private clientRepository: Repository<Client>
   ) {}
 
   async create(createClientDto: CreateClientDto): Promise<Client> {
-    return this.clientRepository.save(createClientDto.name, createClientDto.salary, createClientDto.companyValue);
+    const client = await this.clientRepository.save(createClientDto);
+    return client
   }
 
   async findAll(): Promise<Client[]> {
-    return this.clientRepository.findAll();
+   const clientsList = await this.clientRepository.find();
+    return clientsList
   }
 
   async findOne(id: number): Promise<Client> {
-    const client = await this.clientRepository.findOne(id); 
-    if (!client) {
-      throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
+    const client = await this.clientRepository.findOne({where:{id}});
+    if(!client){
+      throw new NotFoundException('Cliente não Encontrado')
     }
-    return client;
+    return client
   }
 
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
-    const client = await this.findOne(id); 
-    return this.clientRepository.update(id, updateClientDto.name, updateClientDto.salary, updateClientDto.companyValue);
+    await this.clientRepository.update(id, updateClientDto);
+    return
   }
 
-  async delete(id: number): Promise<void> {
-    const client = await this.findOne(id); 
-    await this.clientRepository.delete(id); 
+  async delete(id: number): Promise<void>{
+    await this.clientRepository.delete(id);
+    return
   }
 }
