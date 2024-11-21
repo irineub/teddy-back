@@ -1,16 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/CreateClientDto';
 import { UpdateClientDto } from './dto/UpdateClientDto';
 import { Client } from 'src/database/entities/client.entity';
-
+import { ApiQuery } from '@nestjs/swagger';
 @Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
   @Get()
-  async findAll(): Promise<Client[]> {
-    return this.clientsService.findAll();
+  @ApiQuery({ name: 'page', required: false }) 
+  @ApiQuery({ name: 'pageSize', required: false })
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 10
+  ): Promise<{ clients: Client[], totalItems: number }> {
+    return this.clientsService.findAll(page, pageSize);
   }
 
   @Post()
