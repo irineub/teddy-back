@@ -43,7 +43,7 @@ A Aplicação foi documentada em detalhes usando swagger.
 
 ## Screenshots
 
-- [Swagger](https://i.imgur.com/eMAwK5I.png))
+- ![Swagger](https://i.imgur.com/eMAwK5I.png))
 
 
 
