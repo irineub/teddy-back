@@ -1,5 +1,5 @@
 
-# Teddy Teste Técnico Fullstack - Irineu Brito
+# Aplicação Fullstack - Irineu Brito
 #Backend
 - Utilizado NestJS Com Typescript seguindo os padrões.
 - Conexão com o banco de dados Postgres usando TypeORM.
